@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jbazkar/smartops-framework/main/docs/banner.png" 
+  <img src="https://raw.githubusercontent.com/jbazkar/smartops-framework/main/docs/banner_image_for_AI-driven_predictive_monitoring.png" 
        alt="AI-Driven Predictive Monitoring and Anomaly Detection Framework" width="100%">
 </p>
 
