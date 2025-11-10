@@ -42,7 +42,7 @@ These algorithms learn the **“normal” operational baseline** through unsuper
 ---
 
 ### 🔧 Architecture Diagram
-```mermaid
+
 flowchart LR
   A[Sources: Logs & Metrics] --> B[Collectors]
   B --> C[Feature Engineering]
