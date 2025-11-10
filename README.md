@@ -96,3 +96,13 @@ smartops-framework/
   <img src="results_banking/banking_alerts_by_service.png" width="70%" alt="Banking alerts by service">
 - **Remediation Actions Summary:**  
   <img src="results_banking/banking_actions.png" width="60%" alt="Banking remediation actions">
+
+## 🧩 Banking Endpoint & Validation Evidence
+
+- **Alerts by Endpoint:**  
+  <img src="results_banking/banking_endpoint_alerts.png" width="100%" alt="Endpoint-level alerts in BFSI services">
+
+- **Confusion Matrix (Illustrative):**  
+  <img src="results_banking/banking_confusion_matrix.png" width="60%" alt="Confusion matrix for anomaly detection">
+
+See detailed metrics in [`docs/banking_validation.md`](results_banking/banking_validation.md)
