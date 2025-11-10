@@ -1,3 +1,19 @@
+<p align="center">
+  <img src="docs/banner.png" alt="AI-Driven Predictive Monitoring and Anomaly Detection Framework" width="100%">
+</p>
+<p align="center">
+  <a href="https://github.com/jbazkar/smartops-framework/stargazers">
+    <img src="https://img.shields.io/github/stars/jbazkar/smartops-framework?style=social" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/jbazkar/smartops-framework/issues">
+    <img src="https://img.shields.io/github/issues/jbazkar/smartops-framework?color=yellow" alt="GitHub Issues">
+  </a>
+  <a href="https://github.com/jbazkar/smartops-framework/actions">
+    <img src="https://github.com/jbazkar/smartops-framework/actions/workflows/ci.yml/badge.svg" alt="CI Status">
+  </a>
+</p>
+
+
 # SmartOps (Illustrative) — AI-Driven Predictive Monitoring and Anomaly Detection in DevOps Environments.
 
 > **Purpose:** This repository demonstrates a sanitized open-source representation of an AI-driven DevOps framework (“SmartOps”). It collects telemetry, engineers features, detects anomalies, applies rules, and orchestrates automated or human-in-the-loop remediation.
@@ -26,7 +42,6 @@ These algorithms learn the **“normal” operational baseline** through unsuper
 ---
 
 ### 🔧 Architecture Diagram
-```mermaid
 flowchart LR
   A[Telemetry Sources: Logs & Metrics] --> B[Collectors]
   B --> C[Feature Engineering]
