@@ -43,20 +43,21 @@ These algorithms learn the **“normal” operational baseline** through unsuper
 
 ### 🔧 Architecture Diagram
 flowchart LR
-  A[Telemetry Sources: Logs & Metrics] --> B[Collectors]
+  A[Sources: Logs & Metrics] --> B[Collectors]
   B --> C[Feature Engineering]
-  C --> D1[Isolation Forest]
-  C --> D2[One-Class SVM]
-  C --> D3[Autoencoder]
-  D1 --> E[Score Fusion]
+  C --> D1[Detector: IsolationForest]
+  C --> D2[Detector: OneClass SVM]
+  C --> D3[Detector: Autoencoder]
+  D1 --> E[Ensemble & Scoring]
   D2 --> E
   D3 --> E
   E --> F[Rules Engine: Policies & Guardrails]
   F --> G{Action?}
   G -- yes --> H[Remediator: Playbooks, Tickets, Runbooks]
-  G -- no --> I[Observe & Notify]
+  G -- no  --> I[Observe & Notify]
   H --> J[Feedback Loop: Outcomes → Model tuning]
   I --> J
+
 
 ⚙️ Example Run
 python examples/simulate_pipeline.py --config configs/sample_config.yaml
