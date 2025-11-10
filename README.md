@@ -1,6 +1,8 @@
 <p align="center">
-  <img src="docs/banner.png" alt="AI-Driven Predictive Monitoring and Anomaly Detection Framework" width="100%">
+  <img src="https://raw.githubusercontent.com/jbazkar/smartops-framework/main/docs/banner.png" 
+       alt="AI-Driven Predictive Monitoring and Anomaly Detection Framework" width="100%">
 </p>
+
 <p align="center">
   <a href="https://github.com/jbazkar/smartops-framework/stargazers">
     <img src="https://img.shields.io/github/stars/jbazkar/smartops-framework?style=social" alt="GitHub Stars">
