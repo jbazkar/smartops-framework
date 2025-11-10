@@ -1,0 +1,18 @@
+﻿# venv & bytecode
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# tools & IDE
+.env
+*.log
+.vscode/
+.idea/
+
+# build/test artifacts
+dist/
+build/
+.coverage
+.pytest_cache/

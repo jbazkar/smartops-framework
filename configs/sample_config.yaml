@@ -1,0 +1,15 @@
+﻿project: smartops-illustrative
+env: dev
+
+detectors:
+  iforest_threshold: 0.70
+  ocsvm_threshold: 0.75
+  ae_threshold: 0.80
+
+rules:
+  min_votes: 2
+  min_score: 0.75
+  blocked_services: ["payments"]
+
+remediation:
+  action_on_permit: scale_out
