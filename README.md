@@ -84,3 +84,15 @@ smartops-framework/
 ├─ tests/                     # Smoke tests
 ├─ .github/workflows/         # CI automation
 └─ LICENSE, CITATION.cff, README.md, CONTRIBUTING.md
+
+## 🏦 Banking/Financial Evidence (Illustrative)
+
+- **Telemetry & Scores:** see [`results_banking/banking_telemetry.csv`](results_banking/banking_telemetry.csv) and [`results_banking/banking_model_scores.csv`](results_banking/banking_model_scores.csv)
+- **Latency & CPU with Alerts:**  
+  <img src="results_banking/banking_latency_cpu_alerts.png" width="100%" alt="Banking latency and CPU with alerts">
+- **Ensemble Score Trend:**  
+  <img src="results_banking/banking_ensemble_trend.png" width="100%" alt="Banking ensemble anomaly scores">
+- **Alerts by Service:**  
+  <img src="results_banking/banking_alerts_by_service.png" width="70%" alt="Banking alerts by service">
+- **Remediation Actions Summary:**  
+  <img src="results_banking/banking_actions.png" width="60%" alt="Banking remediation actions">
