@@ -1,12 +1,10 @@
-@'
 cff-version: 1.2.0
 message: "If you use this scaffold, please cite it."
-title: "AI-Driven Predictive Monitoring and Anomaly Detection in DevOps Environments (Illustrative)"
 authors:
   - family-names: Jeyarajan
     given-names: Baskaran
+title: "AI-Driven Predictive Monitoring and Anomaly Detection in DevOps Environments (Illustrative)"
 version: "0.1.0"
 date-released: "2025-11-10"
 license: Apache-2.0
 repository-code: "https://github.com/jbazkar/smartops-framework.git"
-'@ | Set-Content -Encoding UTF8 CITATION.cff
