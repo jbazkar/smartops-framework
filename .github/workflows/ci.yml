@@ -36,22 +36,30 @@ jobs:
           python examples/simulate_pipeline.py --config configs/sample_config.yaml || true
 
       - name: Build v1 deployment summary (if present)
+        shell: bash
         run: |
-          python - << "PY"
-
+          python - <<'PY'
           import os, csv, json, pathlib
-          root = pathlib.Path("."); art = pathlib.Path("artifacts"); art.mkdir(exist_ok=True)
-          p = root/"results_banking"/"banking_impact_summary.csv"
-          rows = list(csv.DictReader(open(p, encoding="utf-8"))) if p.exists() else []
-          md = ["### Banking v1 Deployment Summary",""]
+          root = pathlib.Path(".")
+          art = pathlib.Path("artifacts"); art.mkdir(exist_ok=True)
+
+          p = root / "results_banking" / "banking_impact_summary.csv"
+          rows = []
+          if p.exists():
+              with open(p, encoding="utf-8", newline="") as f:
+                  rows = list(csv.DictReader(f))
+
+          md = ["### Banking v1 Deployment Summary", ""]
           if rows:
-            for r in rows:
-              md.append(f"- **{r['Metric']}**: {r['Before AI Implementation']} → {r['After AI Implementation']} ({r['Improvement %']})")
-              else:
-                md.append("_No v1 impact summary found._")
-                (art/"deploy_summary_v1.md").write_text("\n".join(md), encoding="utf-8")
-                (art/"deploy_summary_v1.json").write_text(json.dumps({"body":"\n".join(md)}), encoding="utf-8")
-                PY
+              for r in rows:
+                  md.append(f"- **{r['Metric']}**: {r['Before AI Implementation']} → {r['After AI Implementation']} ({r['Improvement %']})")
+          else:
+              md.append("_No v1 impact summary found._")
+
+          (art / "deploy_summary_v1.md").write_text("\n".join(md), encoding="utf-8")
+          (art / "deploy_summary_v1.json").write_text(json.dumps({"body":"\n".join(md)}), encoding="utf-8")
+          print("Wrote artifacts/deploy_summary_v1.md")
+          PY
 
 
       - name: Upload artifacts (v1+v2)
