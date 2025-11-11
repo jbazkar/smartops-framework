@@ -1,0 +1,6 @@
+Metric,Before AI Implementation,After AI Implementation,Improvement %
+Anomaly Detection Accuracy,70%,92%,+22%
+False Positives,30%,5%,-25%
+Operational Efficiency,Manual monitoring,Fully automated monitoring,+50%
+Cost Optimization,High infra costs,Reduced via automation/right-sizing,-30%
+Proactive Issue Resolution,20% pre-escalation,≈75% proactive,+55%
