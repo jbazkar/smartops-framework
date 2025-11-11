@@ -9,7 +9,7 @@ This section demonstrates how the SmartOps framework improves proactive anomaly 
 AI-driven predictive monitoring identifies failure indicators early, preventing costly outages.  
 It continuously evaluates system telemetry and triggers preventive actions before breakdowns occur.
 
-<img src="../assets/ai_predictive_monitoring_curve.png" width="80%" alt="AI Predictive Monitoring Concept">
+<img src="assets/ai_predictive_monitoring_curve.png" width="80%" alt="AI Predictive Monitoring Concept">
 
 ---
 
@@ -37,7 +37,7 @@ It continuously evaluates system telemetry and triggers preventive actions befor
 ---
 
 ### **5.4 Visualization Source**
-- Graph: `assets/ai_predictive_monitoring_curve.png`  
+  
 - Table: Framework performance derived from BFSI dataset adjustments (`banking_model_scores.csv`)
 
 ## 🧠 Section 6: Before vs After AI Validation
