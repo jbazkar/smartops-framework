@@ -100,10 +100,10 @@ Demonstrates early-stage anomaly detection and quantified improvement after AI S
 📄 [`docs/evidence.md`](docs/evidence.md)
 
 - AI Predictive Monitoring Curve  
-  <img src="ai_predictive_monitoring_curve.png" width="80%" alt="AI Predictive Monitoring Concept">
+  <img src="docs/assets/ai_predictive_monitoring_curve.png" width="80%" alt="AI Predictive Monitoring Concept">
 
 - Quantitative Results (Before vs After)  
-  <img src="ai_results_comparison.png" width="75%" alt="Before vs After Results">
+  <img src="docs/assets/ai_results_comparison.png" width="75%" alt="Before vs After Results">
 
 ### Section 6 – Before vs After AI Validation  
 Shows measurable impact of AI on detection accuracy and false-positive reduction.
@@ -113,7 +113,7 @@ Shows measurable impact of AI on detection accuracy and false-positive reduction
 | Anomaly Detection Accuracy | 70 % | 92 % | +22 % |
 | False Positives | 30 % | 5 % | −25 % |
 
-<img src="banking_before_after_comparison.png" width="70%" alt="Before vs After AI Performance Chart">
+<img src="docs/assets/banking_before_after_comparison.png" width="70%" alt="Before vs After AI Performance Chart">
 
 ---
 
