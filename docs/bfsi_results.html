@@ -60,24 +60,24 @@
       <div class="kpi"><span class="muted">False Positive Rate</span><strong id="kpi-fpr">—</strong></div>
       <div class="kpi"><span class="muted">Precision</span><strong id="kpi-prec">—</strong></div>
       <div class="kpi"><span class="muted">Recall</span><strong id="kpi-rec">—</strong></div>
-      <p class="note">Source: <code>results_banking_v2/banking_impact_summary_v2.csv</code></p>
+      <p class="note">Source: <code>public/v2/banking_impact_summary_v2.csv</code></p>
     </section>
 
     <section class="card two">
       <h2>Alerts by Service (v2)</h2>
       <canvas id="chartAlerts"></canvas>
-      <p class="note">Computed from <code>results_banking_v2/banking_model_scores.csv</code> using adjusted thresholds.</p>
+      <p class="note">Computed from <code>public/v2/banking_model_scores.csv</code> using adjusted thresholds.</p>
     </section>
 
     <section class="card two">
       <h2>Endpoint Alerts (v2)</h2>
       <canvas id="chartEndpoints"></canvas>
-      <p class="note">From <code>results_banking_v2/banking_endpoint_alerts_v2.csv</code>.</p>
+      <p class="note">From <code>public/v2/banking_endpoint_alerts_v2.csv</code>.</p>
     </section>
 
     <section class="card one">
       <h2>Confusion Matrix (v2)</h2>
-      <div class="imgbox"><img id="cmImg" src="../results_banking_v2/banking_confusion_matrix_v2.png" alt="Confusion Matrix v2" style="max-width:100%;border-radius:10px;border:1px solid #27315c"></div>
+      <div class="imgbox"><img id="cmImg" src="public/v2/banking_confusion_matrix_v2.png" alt="Confusion Matrix v2" style="max-width:100%;border-radius:10px;border:1px solid #27315c"></div>
       <p class="note">Synthetic ground truth used to estimate detection quality.</p>
     </section>
 
@@ -87,7 +87,7 @@
         <thead><tr><th>Metric</th><th>Before</th><th>After</th><th>Δ</th></tr></thead>
         <tbody></tbody>
       </table>
-      <p class="note">Source: <code>results_banking/banking_impact_summary.csv</code></p>
+      <p class="note">Source: <code>public/v1/banking_impact_summary.csv</code></p>
     </section>
   </div>
 </main>
@@ -119,7 +119,7 @@ async function readCSV(path) {
 function pct(v) { return /%$/.test(v) ? v : (parseFloat(v)*100).toFixed(0) + '%'; }
 
 async function loadV2KPIs() {
-  const rows = await readCSV('../results_banking_v2/banking_impact_summary_v2.csv');
+  const rows = await readCSV('public/v2/banking_impact_summary_v2.csv');
   const m = Object.fromEntries(rows.map(r => [r.Metric, r['Banking v2 (Actual)']]));
   document.getElementById('kpi-acc').textContent  = m['Anomaly Detection Accuracy'] || '—';
   document.getElementById('kpi-fpr').textContent  = m['False Positive Rate'] || '—';
@@ -128,7 +128,7 @@ async function loadV2KPIs() {
 }
 
 async function alertsByServiceV2() {
-  const rows = await readCSV('../results_banking_v2/banking_model_scores.csv');
+  const rows = await readCSV('public/v2/banking_model_scores.csv');
   const alerts = {};
   for (const r of rows) {
     const ifs = parseFloat(r.score_iforest||0);
@@ -153,7 +153,7 @@ async function alertsByServiceV2() {
 }
 
 async function endpointAlertsV2() {
-  const rows = await readCSV('../results_banking_v2/banking_endpoint_alerts_v2.csv');
+  const rows = await readCSV('public/v2/banking_endpoint_alerts_v2.csv');
   if (!rows.length) return;
   const services = [...new Set(rows.map(r=>r.service))];
   const endpoints = [...new Set(rows.map(r=>r.endpoint))];
@@ -180,7 +180,7 @@ async function endpointAlertsV2() {
 }
 
 async function loadV1Table() {
-  const rows = await readCSV('../results_banking/banking_impact_summary.csv');
+  const rows = await readCSV('public/v1/banking_impact_summary.csv');
   const tbody = document.querySelector('#tblV1 tbody');
   if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4" class="muted">No v1 summary CSV found.</td></tr>'; return; }
   const delta = (a,b)=>{

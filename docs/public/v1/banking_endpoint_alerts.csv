@@ -1,0 +1,16 @@
+service,endpoint,alert
+account-summary,/fetch,1
+account-summary,/notify,0
+account-summary,/update,0
+credit-card-auth,/auth,2
+credit-card-auth,/authorize,1
+credit-card-auth,/capture,1
+fraud-detection,/block,4
+fraud-detection,/report,4
+fraud-detection,/score,1
+loan-eligibility,/approve,0
+loan-eligibility,/check,2
+loan-eligibility,/reject,1
+payments-gateway,/charge,0
+payments-gateway,/refund,1
+payments-gateway,/settle,4
