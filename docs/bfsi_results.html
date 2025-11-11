@@ -43,7 +43,7 @@
 <body>
 <header>
   <div class="wrap">
-    <h1>SmartOps BFSI Results Dashboard <span class="muted">(v1 reference vs v2 runtime)</span></h1>
+    <h1>SmartOps Credit Card and Enterprise Platform Tech Results Dashboard <span class="muted">(v1 reference vs v2 runtime)</span></h1>
     <div class="row muted">
       <span class="pill">Interactive</span>
       <span class="pill">Chart.js</span>
@@ -62,7 +62,23 @@
       <div class="kpi"><span class="muted">Recall</span><strong id="kpi-rec">—</strong></div>
       <p class="note">Source: <code>public/v2/banking_impact_summary_v2.csv</code></p>
     </section>
+    
+    <div class="grid">
+    <section class="card third">
+      <h2>Metrics — v1 (actual)</h2>
+      <div class="kpi"><span class="muted">Accuracy</span><strong id="kpi-acc">—</strong></div>
+      <div class="kpi"><span class="muted">False Positive Rate</span><strong id="kpi-fpr">—</strong></div>
+      <div class="kpi"><span class="muted">Precision</span><strong id="kpi-prec">—</strong></div>
+      <div class="kpi"><span class="muted">Recall</span><strong id="kpi-rec">—</strong></div>
+      <p class="note">Source: <code>public/v1/banking_impact_summary.csv</code></p>
+    </section>
 
+    <section class="card two">
+      <h2>Alerts by Service (v1)</h2>
+      <canvas id="chartAlerts"></canvas>
+      <p class="note">Computed from <code>public/v1/banking_model_scores_adjusted.csv</code> using adjusted thresholds.</p>
+    </section>
+    
     <section class="card two">
       <h2>Alerts by Service (v2)</h2>
       <canvas id="chartAlerts"></canvas>
@@ -75,9 +91,21 @@
       <p class="note">From <code>public/v2/banking_endpoint_alerts_v2.csv</code>.</p>
     </section>
 
+    <section class="card two">
+      <h2>Endpoint Alerts (v2)</h2>
+      <canvas id="chartEndpoints"></canvas>
+      <p class="note">From <code>public/v1/banking_endpoint_alerts.csv</code>.</p>
+    </section>
+
     <section class="card one">
       <h2>Confusion Matrix (v2)</h2>
       <div class="imgbox"><img id="cmImg" src="public/v2/banking_confusion_matrix_v2.png" alt="Confusion Matrix v2" style="max-width:100%;border-radius:10px;border:1px solid #27315c"></div>
+      <p class="note">Synthetic ground truth used to estimate detection quality.</p>
+    </section>
+
+    <section class="card one">
+      <h2>Confusion Matrix (v2)</h2>
+      <div class="imgbox"><img id="cmImg" src="public/v1/banking_confusion_matrix.png" alt="Confusion Matrix v2" style="max-width:100%;border-radius:10px;border:1px solid #27315c"></div>
       <p class="note">Synthetic ground truth used to estimate detection quality.</p>
     </section>
 
