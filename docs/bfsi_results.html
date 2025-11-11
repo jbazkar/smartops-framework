@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmartOps BFSI Results Dashboard (v1 vs v2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<style>
+  :root { --bg:#0b1020; --panel:#141a2e; --muted:#a8b0c3; --accent:#66d9e8; --ok:#29c17e; --warn:#f5b342; --err:#ef6b73; }
+  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#e6ecff}
+  header{padding:24px 18px;border-bottom:1px solid #222a45; background:linear-gradient(180deg,#0d1530,#0b1020)}
+  h1{margin:0;font-size:24px;font-weight:800;letter-spacing:.2px}
+  h2{font-size:18px;margin:18px 0 8px}
+  .wrap{max-width:1200px;margin:0 auto;padding:18px}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .card{grid-column:span 12;background:var(--panel);border:1px solid #232a46;border-radius:14px;padding:16px}
+  @media(min-width:900px){
+    .half{grid-column:span 6}
+    .third{grid-column:span 4}
+    .two{grid-column:span 8}
+    .one{grid-column:span 4}
+  }
+  .muted{color:var(--muted);font-size:13px}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .pill{padding:6px 10px;border-radius:999px;background:#0f1833;border:1px solid #26305a;color:#b9c3ff;font-size:12px}
+  .kpi{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:12px;background:#101737;border:1px solid #1e2850}
+  .kpi strong{font-size:22px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  code{background:#0e1631;border:1px solid #26305a;border-radius:8px;padding:2px 6px}
+  footer{padding:24px 18px;border-top:1px solid #222a45;color:#9fb0d5}
+  .imgbox{display:flex;justify-content:center;padding:8px}
+  .note{font-size:12px;color:#9fb0d5}
+  table {width:100%;border-collapse:separate;border-spacing:0 8px;font-size:14px}
+  th, td {padding:10px 12px;background:#0f1736}
+  th{color:#bcd3ff;text-align:left;border-top-left-radius:10px;border-top-right-radius:10px}
+  tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+  tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>SmartOps BFSI Results Dashboard <span class="muted">(v1 reference vs v2 runtime)</span></h1>
+    <div class="row muted">
+      <span class="pill">Interactive</span>
+      <span class="pill">Chart.js</span>
+      <span class="pill">Loads CSV/PNG from repo at runtime</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <section class="card third">
+      <h2>Metrics — v2 (actual)</h2>
+      <div class="kpi"><span class="muted">Accuracy</span><strong id="kpi-acc">—</strong></div>
+      <div class="kpi"><span class="muted">False Positive Rate</span><strong id="kpi-fpr">—</strong></div>
+      <div class="kpi"><span class="muted">Precision</span><strong id="kpi-prec">—</strong></div>
+      <div class="kpi"><span class="muted">Recall</span><strong id="kpi-rec">—</strong></div>
+      <p class="note">Source: <code>results_banking_v2/banking_impact_summary_v2.csv</code></p>
+    </section>
+
+    <section class="card two">
+      <h2>Alerts by Service (v2)</h2>
+      <canvas id="chartAlerts"></canvas>
+      <p class="note">Computed from <code>results_banking_v2/banking_model_scores.csv</code> using adjusted thresholds.</p>
+    </section>
+
+    <section class="card two">
+      <h2>Endpoint Alerts (v2)</h2>
+      <canvas id="chartEndpoints"></canvas>
+      <p class="note">From <code>results_banking_v2/banking_endpoint_alerts_v2.csv</code>.</p>
+    </section>
+
+    <section class="card one">
+      <h2>Confusion Matrix (v2)</h2>
+      <div class="imgbox"><img id="cmImg" src="../results_banking_v2/banking_confusion_matrix_v2.png" alt="Confusion Matrix v2" style="max-width:100%;border-radius:10px;border:1px solid #27315c"></div>
+      <p class="note">Synthetic ground truth used to estimate detection quality.</p>
+    </section>
+
+    <section class="card">
+      <h2>Reference — v1 (published)</h2>
+      <table id="tblV1">
+        <thead><tr><th>Metric</th><th>Before</th><th>After</th><th>Δ</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="note">Source: <code>results_banking/banking_impact_summary.csv</code></p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="muted">© 2025 SmartOps — AI-Driven Predictive Monitoring & Anomaly Detection (Baskaran Jeyarajan)</div>
+  </div>
+</footer>
+
+<script>
+async function readCSV(path) {
+  try {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+    const text = await res.text();
+    const [headerLine, ...lines] = text.trim().split(/\r?\n/);
+    const headers = headerLine.split(",");
+    return lines.map(l => {
+      const cells = l.split(",");
+      const o = {}; headers.forEach((h,i)=>o[h]=cells[i]); return o;
+    });
+  } catch (e) {
+    console.warn('CSV load failed for', path, e);
+    return [];
+  }
+}
+
+function pct(v) { return /%$/.test(v) ? v : (parseFloat(v)*100).toFixed(0) + '%'; }
+
+async function loadV2KPIs() {
+  const rows = await readCSV('../results_banking_v2/banking_impact_summary_v2.csv');
+  const m = Object.fromEntries(rows.map(r => [r.Metric, r['Banking v2 (Actual)']]));
+  document.getElementById('kpi-acc').textContent  = m['Anomaly Detection Accuracy'] || '—';
+  document.getElementById('kpi-fpr').textContent  = m['False Positive Rate'] || '—';
+  document.getElementById('kpi-prec').textContent = m['Precision'] || '—';
+  document.getElementById('kpi-rec').textContent  = m['Recall'] || '—';
+}
+
+async function alertsByServiceV2() {
+  const rows = await readCSV('../results_banking_v2/banking_model_scores.csv');
+  const alerts = {};
+  for (const r of rows) {
+    const ifs = parseFloat(r.score_iforest||0);
+    const oc  = parseFloat(r.score_ocsvm||0);
+    const ae  = parseFloat(r.score_autoenc||0);
+    const a = (ifs>0.70 || oc>0.70 || ae>0.75) ? 1 : 0;
+    const svc = r.service || 'service';
+    alerts[svc] = (alerts[svc]||0) + a;
+  }
+  const labels = Object.keys(alerts);
+  const data = labels.map(k => alerts[k]);
+  const ctx = document.getElementById('chartAlerts');
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Alerts', data }] },
+    options: {
+      responsive: true,
+      plugins: { legend: { display:false } },
+      scales: { x: { ticks:{ color:'#cfe3ff' } }, y:{ ticks:{ color:'#cfe3ff' } } }
+    }
+  });
+}
+
+async function endpointAlertsV2() {
+  const rows = await readCSV('../results_banking_v2/banking_endpoint_alerts_v2.csv');
+  if (!rows.length) return;
+  const services = [...new Set(rows.map(r=>r.service))];
+  const endpoints = [...new Set(rows.map(r=>r.endpoint))];
+  const datasets = endpoints.map((ep,i)=>{
+    return {
+      label: ep,
+      data: services.map(svc=>{
+        const row = rows.find(r=>r.service===svc && r.endpoint===ep);
+        return row ? parseFloat(row.alert_adj||row.alerts||0) : 0;
+      }),
+      stack: 'stack1'
+    };
+  });
+  const ctx = document.getElementById('chartEndpoints');
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: services, datasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { position:'bottom', labels:{ color:'#cfe3ff' } } },
+      scales: { x: { stacked:true, ticks:{ color:'#cfe3ff' } }, y:{ stacked:true, ticks:{ color:'#cfe3ff' } } }
+    }
+  });
+}
+
+async function loadV1Table() {
+  const rows = await readCSV('../results_banking/banking_impact_summary.csv');
+  const tbody = document.querySelector('#tblV1 tbody');
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4" class="muted">No v1 summary CSV found.</td></tr>'; return; }
+  const delta = (a,b)=>{
+    const n1 = parseFloat((a||'0').toString().replace('%',''));
+    const n2 = parseFloat((b||'0').toString().replace('%',''));
+    if (isNaN(n1)||isNaN(n2)) return '—';
+    const d = Math.round(n2-n1);
+    return (d>=0?'+':'') + d + '%';
+  };
+  tbody.innerHTML = rows.map(r=>{
+    const d = delta(r['Before AI Implementation'], r['After AI Implementation']);
+    return `<tr>
+      <td>${r.Metric}</td>
+      <td>${r['Before AI Implementation']||'—'}</td>
+      <td>${r['After AI Implementation']||'—'}</td>
+      <td>${d}</td>
+    </tr>`
+  }).join('');
+}
+
+(async function init(){
+  await loadV2KPIs();
+  await alertsByServiceV2();
+  await endpointAlertsV2();
+  await loadV1Table();
+})();
+</script>
+</body>
+</html>
