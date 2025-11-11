@@ -113,7 +113,7 @@ Shows measurable impact of AI on detection accuracy and false-positive reduction
 | Anomaly Detection Accuracy | 70 % | 92 % | +22 % |
 | False Positives | 30 % | 5 % | −25 % |
 
-<img src="docs/assets/banking/banking_before_after_comparison.png" width="70%" alt="Before vs After AI Performance Chart">
+<img src="docs/assets/banking_before_after_comparison.png" width="70%" alt="Before vs After AI Performance Chart">
 
 ---
 
