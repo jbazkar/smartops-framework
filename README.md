@@ -100,7 +100,7 @@ smartops-framework/
 ## 🧩 Banking Endpoint & Validation Evidence
 
 - **Alerts by Endpoint:**  
-  <img src="results_banking/banking_endpoint_alerts.png" width="100%" alt="Endpoint-level alerts in BFSI services">
+  <img src="results_banking/banking_endpoint_alerts.png" width="85%" alt="Endpoint-level alerts in BFSI services">
 
 - **Confusion Matrix (Illustrative):**  
   <img src="results_banking/banking_confusion_matrix.png" width="45%" alt="Confusion matrix for anomaly detection">
