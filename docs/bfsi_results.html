@@ -243,25 +243,37 @@ async function loadV1Table() {
     const el = document.getElementById("smartops-views");
     if (!el) return;
 
-    // 🔹 YOUR REAL API GATEWAY ENDPOINT
-    const endpoint = "https://jmgf0i5809.execute-api.us-east-1.amazonaws.com/prod/views?page=bfsi_results";
+    // SmartOps BFSI key
+    const pageKey = "bfsi_results";
+
+    // Your API Gateway endpoint
+    const endpointBase = "https://jmgf0i5809.execute-api.us-east-1.amazonaws.com/prod/views";
+    const endpoint = endpointBase + "?page=" + encodeURIComponent(pageKey);
 
     fetch(endpoint)
       .then(res => res.json())
       .then(data => {
-        console.log("SmartOps views API:", data);
-        if (typeof data.views === "number") {
-          el.textContent = data.views;
-        } else {
-          el.textContent = "0";
+        console.log("SmartOps BFSI views API:", data);
+
+        if (data && data.error) {
+          console.error("BFSI views API error:", data.error);
+          el.textContent = "0 (today: 0)";
+          return;
         }
+
+        const total = typeof data.views === "number" ? data.views : 0;
+        const today = typeof data.today === "number" ? data.today : 0;
+
+        // Since your label already says "Page views:", just show numbers here
+        el.textContent = `${total} (today: ${today})`;
       })
       .catch(err => {
-        console.error("View counter error:", err);
-        el.textContent = "0"; // graceful fallback
+        console.error("BFSI view counter error:", err);
+        el.textContent = "0 (today: 0)";
       });
   })();
 </script>
+
 
 </body>
 </html>
