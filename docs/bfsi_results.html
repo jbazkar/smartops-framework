@@ -298,7 +298,7 @@ async function loadV1Table() {
 
     const pageKey = "bfsi_results";
     const endpointBase = "https://jmgf0i5809.execute-api.us-east-1.amazonaws.com/prod/views/history";
-    const endpoint = 
+    const endpoint =
       endpointBase +
       "?page=" + encodeURIComponent(pageKey) +
       "&days=30&history=1";
@@ -308,7 +308,7 @@ async function loadV1Table() {
     console.log("BFSI views history API:", data);
 
     const labels = data.map(d => d.date);
-    const values = data.map(d => d.views);
+    const values = data.map(d => Number(d.views || 0));  // ensure numbers
 
     new Chart(canvas, {
       type: 'line',
@@ -328,13 +328,23 @@ async function loadV1Table() {
           legend: { labels: { color: '#a8b0c3' } }
         },
         scales: {
-          x: { ticks: { color: '#a8b0c3' } },
-          y: { ticks: { color: '#a8b0c3' } }
+          x: {
+            ticks: { color: '#a8b0c3' }
+          },
+          y: {
+            min: 0,
+            max: 500,            // fixed range 0–500
+            ticks: {
+              stepSize: 100,     // 0, 100, 200, 300, 400, 500
+              color: '#a8b0c3'
+            }
+          }
         }
       }
     });
   })();
 </script>
+
 
 </body>
 </html>
