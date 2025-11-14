@@ -243,16 +243,15 @@ async function loadV1Table() {
     const el = document.getElementById("smartops-views");
     if (!el) return;
 
-    const namespace = "awsbaskar_smartops";
-    const key = "bfsi_results"; // unique key for this page
-    const url = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+    // 🔹 YOUR REAL API GATEWAY ENDPOINT
+    const endpoint = "https://jmgf0i5809.execute-api.us-east-1.amazonaws.com/prod/views?page=bfsi_results";
 
-    fetch(url)
+    fetch(endpoint)
       .then(res => res.json())
       .then(data => {
-        console.log("CountAPI response:", data);
-        if (typeof data.value === "number") {
-          el.textContent = data.value;
+        console.log("SmartOps views API:", data);
+        if (typeof data.views === "number") {
+          el.textContent = data.views;
         } else {
           el.textContent = "0";
         }
@@ -263,5 +262,6 @@ async function loadV1Table() {
       });
   })();
 </script>
+
 </body>
 </html>
