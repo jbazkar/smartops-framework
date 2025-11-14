@@ -250,6 +250,7 @@ async function loadV1Table() {
     fetch(url)
       .then(res => res.json())
       .then(data => {
+        console.log("CountAPI response:", data);
         if (typeof data.value === "number") {
           el.textContent = data.value;
         } else {
