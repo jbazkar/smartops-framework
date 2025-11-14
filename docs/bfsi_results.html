@@ -281,11 +281,11 @@ async function loadV1Table() {
         const total = typeof data.views === "number" ? data.views : 0;
         const today = typeof data.today === "number" ? data.today : 0;
 
-        el.textContent = `${total} (today: ${today})`;
+        el.textContent = `Total: ${total} (today: ${today})`;
       })
       .catch(err => {
         console.error("BFSI view counter error:", err);
-        el.textContent = "0 (today: 0)";
+        el.textContent = "Total: 0 (today: 0)";
       });
   })();
 </script>
