@@ -7,18 +7,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+
 <!-- 🔹 Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8VZY8YBQ2G"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-8VZY8YBQ2G');  // replace with your GA4 Measurement ID
+  gtag('config', 'G-8VZY8YBQ2G');  // GA4 Measurement ID
 </script>
 <!-- 🔹 End GA4 -->  
+
 <style>
   :root { --bg:#0b1020; --panel:#141a2e; --muted:#a8b0c3; --accent:#66d9e8; --ok:#29c17e; --warn:#f5b342; --err:#ef6b73; }
-  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#e6ecff}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#e6ecff}
   header{padding:24px 18px;border-bottom:1px solid #222a45; background:linear-gradient(180deg,#0d1530,#0b1020)}
   h1{margin:0;font-size:24px;font-weight:800;letter-spacing:.2px}
   h2{font-size:18px;margin:18px 0 8px}
@@ -33,7 +36,7 @@
   }
   .muted{color:var(--muted);font-size:13px}
   .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-  .pill{padding:6px 10px;border-radius:999px;background:#0f1833;border:1px solid #26305a;color:#b9c3ff;font-size:12px}
+  .pill{padding:6px 10px;border-radius:999px;background:#0f1833;border:1px solid #26305a;color:#b9c0ff;font-size:12px}
   .kpi{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:12px;background:#101737;border:1px solid #1e2850}
   .kpi strong{font-size:22px}
   .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
@@ -86,7 +89,11 @@
 
     <section class="card one">
       <h2>Confusion Matrix (v2)</h2>
-      <div class="imgbox"><img id="cmImg" src="public/v2/banking_confusion_matrix_v2.png" alt="Confusion Matrix v2" style="max-width:100%;border-radius:10px;border:1px solid #27315c"></div>
+      <div class="imgbox">
+        <img id="cmImg" src="public/v2/banking_confusion_matrix_v2.png"
+             alt="Confusion Matrix v2"
+             style="max-width:100%;border-radius:10px;border:1px solid #27315c">
+      </div>
       <p class="note">Synthetic ground truth used to estimate detection quality.</p>
     </section>
 
@@ -98,12 +105,41 @@
       </table>
       <p class="note">Source: <code>public/v1/banking_impact_summary.csv</code></p>
     </section>
+
+    <!-- 👁 Views-by-date chart card -->
+    <section class="card">
+      <h2>SmartOps BFSI Page Views (Last 30 Days)</h2>
+      <canvas id="viewsChart" height="180"></canvas>
+      <p class="note">Served by AWS Lambda + DynamoDB (SmartOpsPageViewsDaily).</p>
+    </section>
   </div>
 </main>
 
 <footer>
   <div class="wrap">
-    <div class="muted">© 2025 SmartOps — AI-Driven Predictive Monitoring & Anomaly Detection (Baskaran Jeyarajan)</div>
+    <div class="muted">© 2025 SmartOps — AI-Driven Predictive Monitoring &amp; Anomaly Detection (Baskaran Jeyarajan)</div>
+
+    <!-- 🔹 Visible page view counter -->
+    <div style="text-align:center; margin-top:24px;">
+      <span style="
+        font-size:14px;
+        font-weight:800;
+        color:var(--muted);
+        letter-spacing:0.3px;
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+      ">
+        <!-- Eye icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="var(--accent)" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        Page views: <span id="smartops-views">…</span>
+      </span>
+    </div>
   </div>
 </footer>
 
@@ -191,7 +227,10 @@ async function endpointAlertsV2() {
 async function loadV1Table() {
   const rows = await readCSV('public/v1/banking_impact_summary.csv');
   const tbody = document.querySelector('#tblV1 tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4" class="muted">No v1 summary CSV found.</td></tr>'; return; }
+  if (!rows.length) { 
+    tbody.innerHTML = '<tr><td colspan="4" class="muted">No v1 summary CSV found.</td></tr>'; 
+    return; 
+  }
   const delta = (a,b)=>{
     const n1 = parseFloat((a||'0').toString().replace('%',''));
     const n2 = parseFloat((b||'0').toString().replace('%',''));
@@ -217,36 +256,14 @@ async function loadV1Table() {
   await loadV1Table();
 })();
 </script>
-  <!-- 🔹 Visible page view counter -->
-  <footer class="wrap" style="text-align:center; margin-top:24px;">
-    <span style="
-      font-size:14px;
-      font-weight:800;
-      color:var(--muted);
-      letter-spacing:0.3px;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    ">
-    <!-- Eye icon -->
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-      stroke="var(--accent)" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-      <circle cx="12" cy="12" r="3"/>
-    </svg>
-      Page views: <span id="smartops-views">…</span>
-  </span>
-</footer>
+
+<!-- 🔹 Visible page view counter (uses Lambda summary: /views) -->
 <script>
   (function () {
     const el = document.getElementById("smartops-views");
     if (!el) return;
 
-    // SmartOps BFSI key
     const pageKey = "bfsi_results";
-
-    // Your API Gateway endpoint
     const endpointBase = "https://jmgf0i5809.execute-api.us-east-1.amazonaws.com/prod/views";
     const endpoint = endpointBase + "?page=" + encodeURIComponent(pageKey);
 
@@ -264,7 +281,6 @@ async function loadV1Table() {
         const total = typeof data.views === "number" ? data.views : 0;
         const today = typeof data.today === "number" ? data.today : 0;
 
-        // Since your label already says "Page views:", just show numbers here
         el.textContent = `${total} (today: ${today})`;
       })
       .catch(err => {
@@ -274,6 +290,51 @@ async function loadV1Table() {
   })();
 </script>
 
+<!-- 🔹 Views-by-date chart (uses history: /views/history) -->
+<script>
+  (async function() {
+    const canvas = document.getElementById("viewsChart");
+    if (!canvas) return;
+
+    const pageKey = "bfsi_results";
+    const endpointBase = "https://jmgf0i5809.execute-api.us-east-1.amazonaws.com/prod/views/history";
+    const endpoint = 
+      endpointBase +
+      "?page=" + encodeURIComponent(pageKey) +
+      "&days=30&history=1";
+
+    const res = await fetch(endpoint);
+    const data = await res.json();
+    console.log("BFSI views history API:", data);
+
+    const labels = data.map(d => d.date);
+    const values = data.map(d => d.views);
+
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Views (last 30 days)",
+          data: values,
+          borderColor: "#66d9e8",
+          borderWidth: 2,
+          tension: 0.3,
+          fill: false
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: '#a8b0c3' } }
+        },
+        scales: {
+          x: { ticks: { color: '#a8b0c3' } },
+          y: { ticks: { color: '#a8b0c3' } }
+        }
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
