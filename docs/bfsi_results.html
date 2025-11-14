@@ -223,8 +223,19 @@ async function loadV1Table() {
       font-size:14px;
       font-weight:800;
       color:var(--muted);
-      letter-spacing:0.3px;">
-      Page views:
+      letter-spacing:0.3px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    ">
+    <!-- Eye icon -->
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+      stroke="var(--accent)" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+      Page views: <span id="smartops-views">…</span>
   </span>
 
   <img 
@@ -238,5 +249,29 @@ async function loadV1Table() {
       padding:3px 6px;
     ">
 </footer>
+<script>
+  (function () {
+    const el = document.getElementById("smartops-views");
+    if (!el) return;
+
+    const namespace = "awsbaskar_smartops";
+    const key = "bfsi_results"; // unique key for this page
+    const url = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if (typeof data.value === "number") {
+          el.textContent = data.value;
+        } else {
+          el.textContent = "0";
+        }
+      })
+      .catch(err => {
+        console.error("View counter error:", err);
+        el.textContent = "0"; // graceful fallback
+      });
+  })();
+</script>
 </body>
 </html>
